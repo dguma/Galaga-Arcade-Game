@@ -1,0 +1,120 @@
+/* line 7, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+html {
+  margin: 0;
+  padding: 0;
+}
+
+/* line 13, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+body {
+  min-width: 100%;
+  min-height: 100%;
+  display: grid;
+  grid-template-areas: "header header header" "highScore gameContainer scoreContainer" "footer footer footer";
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* line 25, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+header {
+  grid-area: header;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* line 31, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+/* line 38, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+footer {
+  grid-area: footer;
+}
+
+/* line 42, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.logo {
+  width: 20em;
+}
+
+/* line 46, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.highScoreContainer,
+.gameContainer,
+.scoreContainer {
+  height: 80vw;
+}
+
+/* line 52, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.highScoreContainer {
+  grid-area: highScoreContainer;
+  background: rgba(0, 0, 0, 0.5);
+  width: 23vw;
+}
+
+/* line 58, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.gameContainer {
+  grid-area: gameContainer;
+  background: url("images/background.png");
+  background-size: cover;
+  position: relative;
+  width: 56vw;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* line 73, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.playerShip {
+  width: 2.5em;
+  height: 2.5em;
+  object-fit: cover;
+  position: absolute;
+}
+
+/* line 80, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.enemyShip {
+  margin: 0;
+  padding: 0;
+  width: 2.5em;
+  height: 2.5em;
+  object-fit: cover;
+  position: absolute;
+}
+
+/* line 89, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.rocket {
+  width: 2.5em;
+  height: 2.5em;
+  object-fit: cover;
+  position: absolute;
+}
+
+/* line 97, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.gameBackgroundAnimation {
+  animation: loopBackground 10s linear infinite;
+}
+
+@keyframes loopBackground {
+  0% {
+    background-position-y: 0px;
+  }
+  100% {
+    background-position-y: 250em;
+  }
+}
+
+/* line 110, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.scoreContainer {
+  grid-area: scoreContainer;
+  background: rgba(0, 0, 0, 0.15);
+  width: 23vw;
+}
+
+/*# sourceMappingURL=styles.css.map */

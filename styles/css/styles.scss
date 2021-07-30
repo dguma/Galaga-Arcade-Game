@@ -1,0 +1,115 @@
+//Variables
+
+$logoWidth: 20em;
+
+
+
+html {
+	margin: 0;
+	padding: 0;
+}
+
+
+body {
+	min-width: 100%;
+	min-height: 100%;
+	display: grid;
+	grid-template-areas: 
+		"header header header"
+		"highScore gameContainer scoreContainer"
+		"footer footer footer";
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+}
+header {
+	grid-area: header;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+main {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+//	margin: 0 .35em;
+}
+footer {
+	grid-area: footer;
+}
+
+.logo {
+	width: $logoWidth;
+}
+
+.highScoreContainer,
+.gameContainer,
+.scoreContainer {
+	height: 80vw;
+}
+
+.highScoreContainer {
+	grid-area: highScoreContainer;
+	background: rgba(0,0,0,.5);
+	width: 23vw;
+}
+
+.gameContainer {
+	grid-area: gameContainer;
+	background: url("images/background.png");
+	background-size: cover; 
+	position: relative;
+	width: 56vw;
+	height: 100%;
+	display: flex;
+//	flex: 1;
+	flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+
+.playerShip {
+	width: 2.5em;
+	height: 2.5em;
+	object-fit: cover;
+	position: absolute;
+}
+
+.enemyShip {
+  margin: 0;
+  padding: 0;
+  width: 2.5em;
+  height: 2.5em;
+  object-fit: cover;
+  position: absolute;
+}
+
+.rocket {
+	width: 2.5em;
+	height: 2.5em;
+	object-fit: cover;
+	position: absolute;
+}
+
+
+.gameBackgroundAnimation {
+	animation: loopBackground 10s linear infinite;
+}
+
+@keyframes loopBackground {
+	0% {
+		background-position-y: 0px; 
+	}
+	100% {
+		background-position-y: 250em;
+	}
+}
+
+.scoreContainer {
+	grid-area: scoreContainer;
+	background: rgba(0,0,0,.15);
+	width: 23vw;
+}
+
