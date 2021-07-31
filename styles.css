@@ -82,13 +82,39 @@ footer {
 .enemyShip {
   margin: 0;
   padding: 0;
-  width: 2.5em;
-  height: 2.5em;
+  width: 2.25em;
+  height: 2.25em;
   object-fit: cover;
   position: absolute;
 }
 
 /* line 89, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.enemyShipRGY {
+  margin: 0;
+  padding: 0;
+  width: 2.25em;
+  height: 2.25em;
+  object-fit: cover;
+  position: absolute;
+}
+
+/* line 98, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.enemyShipRotate {
+  animation: rotate 3s ease infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(180deg);
+    top: 100px;
+  }
+  to {
+    transform: rotate(0deg);
+    top: 0px;
+  }
+}
+
+/* line 113, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .rocket {
   width: 2.5em;
   height: 2.5em;
@@ -96,7 +122,7 @@ footer {
   position: absolute;
 }
 
-/* line 97, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 121, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .gameBackgroundAnimation {
   animation: loopBackground 10s linear infinite;
 }
@@ -110,7 +136,7 @@ footer {
   }
 }
 
-/* line 110, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 134, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .scoreContainer {
   grid-area: scoreContainer;
   background: rgba(0, 0, 0, 0.15);

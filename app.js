@@ -26,14 +26,25 @@ const playerShipWidth = Math.max(playerShip.clientWidth);
 const playerShipMaxSpeed = 600;
 
 //Rocket Details
-const rocketMaxSpeed = 1200;
-const rocketCoolDown = .125;
+const rocketMaxSpeed = 500;
+const rocketCoolDown = .5;
 
 //Enemy layout
-const numberOfEnemies_perRow = 10;
-const enemyHorPadding = 100;
-const enemyVerPadding = 70;
-const enemyVerSpacing = 80;
+const numberOfEnemiesRGY_perRow = 4;
+const numberOfEnemiesRB_perRow = 8;
+const numberOfEnemiesRYB_perRow = 10;
+
+const enemyRGYHorPadding = 220;
+const enemyRGYVerPadding = 70;
+const enemyRGYVerSpacing = 80;
+
+const enemyRBHorPadding = 100;
+const enemyRBVerPadding = 130;
+const enemyRBVerSpacing = 50;
+
+const enemyRYBHorPadding = 50;
+const enemyRYBVerPadding = 240;
+const enemyRYBVerSpacing = 50;
 
 //Default Game State
 
@@ -54,13 +65,33 @@ const gameDefaultState = {
 function init(){
 	createPlayerShip(gameContainer)
 	
-	const spacingForEnemy = (gameContainer_width - enemyHorPadding * 2) / (numberOfEnemies_perRow - 1);
+	const spacingForEnemyRGY = (gameContainer_width - enemyRGYHorPadding * 2) / (numberOfEnemiesRGY_perRow - 1);
 	
-	for(let a = 0; a < 3; a++) {
-		let y = enemyVerPadding + a * enemyVerSpacing;
-		for(let b = 0; b < numberOfEnemies_perRow; b++) {
-			let x  = b * spacingForEnemy + enemyHorPadding;
-			createEnemyShip(gameContainer, x, y);
+	const spacingForEnemyRB = (gameContainer_width - enemyRBHorPadding * 2) / (numberOfEnemiesRB_perRow - 1);
+	
+	const spacingForEnemyRYB = (gameContainer_width - enemyRYBHorPadding * 2) / (numberOfEnemiesRYB_perRow - 1);
+	
+	for(let a = 0; a < 1; a++) {
+		let y = enemyRGYVerPadding + a * enemyRGYVerSpacing;
+		for(let b = 0; b < numberOfEnemiesRGY_perRow; b++) {
+			let x  = b * spacingForEnemyRGY + enemyRGYHorPadding;
+			createEnemyShipRGY(gameContainer, x, y);
+		}
+	}
+	
+	for(let a = 0; a < 2; a++) {
+		let y = enemyRBVerPadding + a * enemyRBVerSpacing;
+		for(let b = 0; b < numberOfEnemiesRB_perRow; b++) {
+			let x  = b * spacingForEnemyRB + enemyRBHorPadding;
+			createEnemyShipRB(gameContainer, x, y);
+		}
+	}
+	
+	for(let a = 0; a < 2; a++) {
+		let y = enemyRYBVerPadding + a * enemyRYBVerSpacing;
+		for(let b = 0; b < numberOfEnemiesRYB_perRow; b++) {
+			let x  = b * spacingForEnemyRYB + enemyRYBHorPadding;
+			createEnemyShipRYB(gameContainer, x, y);
 		}
 	}
 }
@@ -83,9 +114,57 @@ function createPlayerShip(gameContainer){
 
 //Create Rocket Function
 
-function createEnemyShip(gameContainer, x, y) {
+function createEnemyShipRGY(gameContainer, x, y) {
 	const enemyShip = document.createElement('img');
-	enemyShip.src = 'images/enemy/enemyShip.png';
+	enemyShip.src = 'images/enemy/enemyBoss.gif';
+	enemyShip.setAttribute('class', 'enemyShipRGY');
+//	enemyShip.style.animation = "rotate 3s ease infinite";
+	
+	gameContainer.appendChild(enemyShip);
+	
+	let enemy = { x, y, enemyShip };
+	gameDefaultState.enemies.push(enemy);
+	
+	setLocation(enemyShip, x, y);
+	
+	
+//	console.log(document.querySelectorAll('img.enemyShipRGY'));
+	
+	let arrayOfRGY = new Array(document.querySelectorAll('img.enemyShipRGY'));
+//	
+	let sum = arrayOfRGY[0][1];
+//	for(let i = 0; i < 3; i++) {
+//		let rgy = arrayOfRGY[0][i];
+//		if(rgy[0][i] === 0) {
+//			setInterval(() => {
+//				enemyShip.style.animation = "rotate 3s ease infinite";
+//			}, 1000);   
+//		} else if (rgy[i] === 1) {
+//			setInterval(() => {
+//				enemyShip.style.animation = "rotate 3s ease infinite";
+//			}, 2000) 
+//		}
+//		
+//	}
+	console.log(sum);
+}
+
+function createEnemyShipRB(gameContainer, x, y) {
+	const enemyShip = document.createElement('img');
+	enemyShip.src = 'images/enemy/enemyRB.gif';
+	enemyShip.setAttribute('class', 'enemyShip');
+	
+	gameContainer.appendChild(enemyShip);
+	
+	let enemy = { x, y, enemyShip };
+	gameDefaultState.enemies.push(enemy);
+	
+	setLocation(enemyShip, x, y);
+}
+
+function createEnemyShipRYB(gameContainer, x, y) {
+	const enemyShip = document.createElement('img');
+	enemyShip.src = 'images/enemy/enemyRYB.gif';
 	enemyShip.setAttribute('class', 'enemyShip');
 	
 	gameContainer.appendChild(enemyShip);
@@ -166,7 +245,7 @@ function changeEnemy(deltaTime, gameContainer) {
 	const enemies = gameDefaultState.enemies;
 	for(let i = 0; i < enemies.length; i++) {
 		const enemy = enemies[i];
-		const x = enemy.x + deltaX;
+		const x = enemy.x + deltaX - 20;
 		const y = enemy.y + deltaY;
 		setLocation(enemy.enemyShip, x, y);
 	}
@@ -278,16 +357,25 @@ window.requestAnimationFrame(update);
 
 
 
+console.log(gameDefaultState.playerPositionX)
 
 
+setInterval(function(){
+//	for(let i = 0; i < gameDefaultState.enemies.length; i++) {
+		gameDefaultState.enemies[0].enemyShip.animate([
+		{ transform: `translateY(${gameDefaultState.enemies[0].y}) rotate(0deg)` },
+		{ transform: `translateY(${gameDefaultState.playerPositionY * 2.16}px) rotate(360deg)` }
+		], {
+		duration: 6000,
+		iterations: Infinity
+		});
+	
+		
+		
+},500)
 
 
-
-
-
-
-
-
+setInterval(function(){removeEnemyShip(gameContainer, gameDefaultState.enemies[0])},2150)
 
 
 
