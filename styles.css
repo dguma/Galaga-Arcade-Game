@@ -6,71 +6,184 @@ html {
 
 /* line 13, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 body {
+  position: relative;
   min-width: 100%;
-  min-height: 100%;
+  max-height: 80%;
   display: grid;
   grid-template-areas: "header header header" "highScore gameContainer scoreContainer" "footer footer footer";
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow: hidden;
+  justify-content: center;
 }
 
-/* line 25, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 28, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+body::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: url("images/background.png") 0 0 repeat;
+  background-size: cover;
+  animation: rotateBackgound 30s linear infinite;
+  z-index: -1;
+}
+
+@keyframes rotateBackgound {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 10000px;
+  }
+}
+
+/* line 52, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 header {
   grid-area: header;
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 1em;
 }
 
-/* line 31, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 60, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 main {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-top: 1em;
+  animation: glow 3s linear infinite;
 }
 
-/* line 38, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+@keyframes glow {
+  0% {
+    box-shadow: 0px 0px 20px 0px rgba(246, 171, 0, 0.25);
+  }
+  50% {
+    box-shadow: 0px 0px 20px 0px rgba(246, 171, 0, 0.85);
+  }
+  100% {
+    box-shadow: 0px 0px 20px 0px rgba(246, 171, 0, 0.25);
+  }
+}
+
+/* line 75, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 footer {
   grid-area: footer;
 }
 
-/* line 42, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 79, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .logo {
   width: 20em;
 }
 
-/* line 46, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
-.highScoreContainer,
-.gameContainer,
-.scoreContainer {
-  height: 80vw;
+/* line 83, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.modal {
+  display: flex;
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 2em;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  width: 50vw;
+  height: 80vh;
+  z-index: 1;
 }
 
-/* line 52, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 96, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.modal h1 {
+  color: #0eb738;
+}
+
+/* line 100, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.modal p:last-child {
+  color: red;
+}
+
+/* line 104, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.modal button {
+  min-width: 50%;
+  min-height: 10%;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.25em;
+  border-radius: 2em;
+  background: rgba(230, 0, 18, 0.25);
+  box-shadow: 0px 0px 10px -3px white;
+  border: white thin solid;
+}
+
+/* line 115, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.modal button:hover {
+  background: rgba(230, 0, 18, 0.5);
+  transform: scale(0.95);
+  transition: transform .5s ease;
+}
+
+/* line 121, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.modal .controls {
+  max-width: 50%;
+  max-height: 25%;
+}
+
+/* line 127, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.highScoreContainer,
+.scoreContainer {
+  height: 80vh;
+}
+
+/* line 132, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .highScoreContainer {
   grid-area: highScoreContainer;
-  background: rgba(0, 0, 0, 0.5);
-  width: 23vw;
+  background: url("images/galagaBezelLeft.jpg");
+  background-size: cover;
+  background-position: right;
+  background-repeat: no-repeat;
+  width: 18vw;
 }
 
-/* line 58, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 141, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.scoreContainer {
+  grid-area: scoreContainer;
+  background: url("images/galagaBezelRight.jpg");
+  background-size: cover;
+  background-position: left;
+  background-repeat: no-repeat;
+  width: 18vw;
+}
+
+/* line 152, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.scoreCountContainer {
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  text-transform: uppercase;
+  margin-left: 1.5em;
+  z-index: 0;
+  position: absolute;
+}
+
+/* line 161, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .gameContainer {
   grid-area: gameContainer;
   background: url("images/background.png");
   background-size: cover;
   position: relative;
-  width: 56vw;
-  height: 100%;
+  width: 50vw;
+  height: 80vh;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  z-index: 0;
 }
 
-/* line 73, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 176, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .playerShip {
   width: 2.5em;
   height: 2.5em;
@@ -78,7 +191,7 @@ footer {
   position: absolute;
 }
 
-/* line 80, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 183, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .enemyShip {
   margin: 0;
   padding: 0;
@@ -88,7 +201,7 @@ footer {
   position: absolute;
 }
 
-/* line 89, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 192, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .enemyShipRGY {
   margin: 0;
   padding: 0;
@@ -98,7 +211,7 @@ footer {
   position: absolute;
 }
 
-/* line 98, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 201, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .enemyShipRotate {
   animation: rotate 3s ease infinite;
 }
@@ -114,7 +227,7 @@ footer {
   }
 }
 
-/* line 113, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 216, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .rocket {
   width: 2.5em;
   height: 2.5em;
@@ -122,7 +235,7 @@ footer {
   position: absolute;
 }
 
-/* line 121, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+/* line 224, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
 .gameBackgroundAnimation {
   animation: loopBackground 10s linear infinite;
 }
@@ -136,11 +249,381 @@ footer {
   }
 }
 
-/* line 134, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
-.scoreContainer {
-  grid-area: scoreContainer;
-  background: rgba(0, 0, 0, 0.15);
-  width: 23vw;
+/* line 237, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+}
+
+/* line 241, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion {
+  border-radius: 25%;
+  position: absolute;
+  width: 4px;
+  height: 80px;
+  left: -2px;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transform-origin: 50% 100%;
+  overflow: hidden;
+}
+
+/* line 253, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: #f6ab00;
+  animation: explosionEffect 1.75s ease infinite;
+}
+
+/* line 264, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(1) {
+  transform: rotate(0deg) translateY(-15px);
+}
+
+/* line 267, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(2) {
+  transform: rotate(30deg) translateY(-15px);
+}
+
+/* line 270, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(3) {
+  transform: rotate(60deg) translateY(-15px);
+}
+
+/* line 273, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(4) {
+  transform: rotate(90deg) translateY(-15px);
+}
+
+/* line 276, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(5) {
+  transform: rotate(120deg) translateY(-15px);
+}
+
+/* line 279, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(6) {
+  transform: rotate(150deg) translateY(-15px);
+}
+
+/* line 282, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(7) {
+  transform: rotate(180deg) translateY(-15px);
+}
+
+/* line 285, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(8) {
+  transform: rotate(210deg) translateY(-15px);
+}
+
+/* line 288, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(9) {
+  transform: rotate(240deg) translateY(-15px);
+}
+
+/* line 291, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(10) {
+  transform: rotate(270deg) translateY(-15px);
+}
+
+/* line 294, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(11) {
+  transform: rotate(300deg) translateY(-15px);
+}
+
+/* line 297, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer1 .fireworkExplosion:nth-child(12) {
+  transform: rotate(330deg) translateY(-15px);
+}
+
+/* line 302, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 {
+  position: absolute;
+  top: 25%;
+  left: 75%;
+}
+
+/* line 306, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion {
+  border-radius: 25%;
+  position: absolute;
+  width: 4px;
+  height: 80px;
+  left: -2px;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transform-origin: 50% 100%;
+  overflow: hidden;
+}
+
+/* line 318, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: #62b992;
+  animation: explosionEffect 1.175s ease infinite;
+}
+
+/* line 329, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(1) {
+  transform: rotate(0deg) translateY(-15px);
+}
+
+/* line 332, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(2) {
+  transform: rotate(30deg) translateY(-15px);
+}
+
+/* line 335, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(3) {
+  transform: rotate(60deg) translateY(-15px);
+}
+
+/* line 338, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(4) {
+  transform: rotate(90deg) translateY(-15px);
+}
+
+/* line 341, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(5) {
+  transform: rotate(120deg) translateY(-15px);
+}
+
+/* line 344, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(6) {
+  transform: rotate(150deg) translateY(-15px);
+}
+
+/* line 347, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(7) {
+  transform: rotate(180deg) translateY(-15px);
+}
+
+/* line 350, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(8) {
+  transform: rotate(210deg) translateY(-15px);
+}
+
+/* line 353, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(9) {
+  transform: rotate(240deg) translateY(-15px);
+}
+
+/* line 356, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(10) {
+  transform: rotate(270deg) translateY(-15px);
+}
+
+/* line 359, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(11) {
+  transform: rotate(300deg) translateY(-15px);
+}
+
+/* line 362, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer2 .fireworkExplosion:nth-child(12) {
+  transform: rotate(330deg) translateY(-15px);
+}
+
+/* line 367, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 {
+  position: absolute;
+  top: 90%;
+  left: 25%;
+}
+
+/* line 371, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion {
+  border-radius: 25%;
+  position: absolute;
+  width: 4px;
+  height: 80px;
+  left: -2px;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transform-origin: 50% 100%;
+  overflow: hidden;
+}
+
+/* line 383, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: #3dff65;
+  animation: explosionEffect 1.5s ease infinite;
+}
+
+/* line 394, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(1) {
+  transform: rotate(0deg) translateY(-15px);
+}
+
+/* line 397, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(2) {
+  transform: rotate(30deg) translateY(-15px);
+}
+
+/* line 400, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(3) {
+  transform: rotate(60deg) translateY(-15px);
+}
+
+/* line 403, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(4) {
+  transform: rotate(90deg) translateY(-15px);
+}
+
+/* line 406, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(5) {
+  transform: rotate(120deg) translateY(-15px);
+}
+
+/* line 409, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(6) {
+  transform: rotate(150deg) translateY(-15px);
+}
+
+/* line 412, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(7) {
+  transform: rotate(180deg) translateY(-15px);
+}
+
+/* line 415, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(8) {
+  transform: rotate(210deg) translateY(-15px);
+}
+
+/* line 418, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(9) {
+  transform: rotate(240deg) translateY(-15px);
+}
+
+/* line 421, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(10) {
+  transform: rotate(270deg) translateY(-15px);
+}
+
+/* line 424, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(11) {
+  transform: rotate(300deg) translateY(-15px);
+}
+
+/* line 427, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer3 .fireworkExplosion:nth-child(12) {
+  transform: rotate(330deg) translateY(-15px);
+}
+
+/* line 432, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 {
+  position: absolute;
+  top: 90%;
+  left: 75%;
+}
+
+/* line 436, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion {
+  border-radius: 25%;
+  position: absolute;
+  width: 4px;
+  height: 80px;
+  left: -2px;
+  bottom: 0;
+  background: rgba(98, 185, 146, 0);
+  transform-origin: 50% 100%;
+  overflow: hidden;
+}
+
+/* line 448, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: #e60012;
+  animation: explosionEffect 1s ease infinite;
+}
+
+/* line 459, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(1) {
+  transform: rotate(0deg) translateY(-15px);
+}
+
+/* line 462, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(2) {
+  transform: rotate(30deg) translateY(-15px);
+}
+
+/* line 465, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(3) {
+  transform: rotate(60deg) translateY(-15px);
+}
+
+/* line 468, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(4) {
+  transform: rotate(90deg) translateY(-15px);
+}
+
+/* line 471, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(5) {
+  transform: rotate(120deg) translateY(-15px);
+}
+
+/* line 474, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(6) {
+  transform: rotate(150deg) translateY(-15px);
+}
+
+/* line 477, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(7) {
+  transform: rotate(180deg) translateY(-15px);
+}
+
+/* line 480, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(8) {
+  transform: rotate(210deg) translateY(-15px);
+}
+
+/* line 483, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(9) {
+  transform: rotate(240deg) translateY(-15px);
+}
+
+/* line 486, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(10) {
+  transform: rotate(270deg) translateY(-15px);
+}
+
+/* line 489, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(11) {
+  transform: rotate(300deg) translateY(-15px);
+}
+
+/* line 492, ../GA/Galaga-Arcade-Game/styles/css/styles.scss */
+.fireworkContainer4 .fireworkExplosion:nth-child(12) {
+  transform: rotate(330deg) translateY(-15px);
+}
+
+@keyframes explosionEffect {
+  from {
+    top: 100%;
+  }
+  to {
+    top: -50%;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */

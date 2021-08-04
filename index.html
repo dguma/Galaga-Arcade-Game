@@ -5,9 +5,13 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<title>Galaga Game Model</title>
 	<link rel="stylesheet" href="styles.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
 <body>
+
 	<header>
 	
 		<img class="logo" src="https://www.pinclipart.com/picdir/big/63-636949_fire-pit-clip-art.png" alt="Picture of Galaga Logo"
@@ -18,15 +22,23 @@
 	<main>
 		
 		<div class="highScoreContainer">
-		1
+		
 		</div>
 		
 		<div class="gameContainer gameBackgroundAnimation">
-		2
+			<div class="scoreCountContainer">
+				<h2 class="score">Score</h2>
+				<p class="scoreCount"></p>
+			</div>
+			
+			<div class="modal">
+				<img class="controls" src="images/controls.png" alt="controls">
+				<button id="start">Start</button>
+			</div>
 		</div>
 		
 		<div class="scoreContainer">
-		3
+			
 		</div>
 	
 	</main>

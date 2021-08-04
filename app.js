@@ -10,6 +10,11 @@ const spacebarKeycode = 32;
 
 const gameContainer = document.querySelector('.gameContainer');
 
+//Get modal Node
+
+const modal = document.querySelector('.modal');
+const start = document.getElementById('start');
+
 //Create Player Ship
 
 const playerShip = document.createElement('img');
@@ -46,6 +51,13 @@ const enemyRYBHorPadding = 50;
 const enemyRYBVerPadding = 240;
 const enemyRYBVerSpacing = 50;
 
+const enemyRocketMaxSpeed = 200;
+const enemyRocketCoolDown = 30;
+
+const scoreCounterNode = document.querySelector('.scoreCount');
+let score = 0;
+scoreCounterNode.textContent = score;
+
 //Default Game State
 
 const gameDefaultState = {
@@ -57,7 +69,8 @@ const gameDefaultState = {
 	playerPositionY: 0,
 	playerCooldown: 0,
 	rockets: [], /*Created rockets pushed into empty array*/
-	enemies: [] /*Created enemies pushed into empty array*/
+	enemies: [], /*Created enemies pushed into empty array*/
+	eRockets: [] /*Created enemy rockets pushed into empty array*/
 };
 
 //Initialize Game Function
@@ -99,7 +112,7 @@ function init(){
 //Create Player Function
 
 function createPlayerShip(gameContainer){
-	gameDefaultState.playerPositionX = gameContainer_width / 2.18;
+	gameDefaultState.playerPositionX = gameContainer_width / 2.025;
 	
 	gameDefaultState.playerPositionY = gameContainer_height - 70;
 	
@@ -112,7 +125,13 @@ function createPlayerShip(gameContainer){
 	
 }
 
-//Create Rocket Function
+function randomNumMinMax(min, max) {
+	if(min === undefined) min = 0;
+	if(max === undefined) max = 1;
+	return min + Math.random() * (max - min);
+}
+
+//Create createEnemyShipRGY Function
 
 function createEnemyShipRGY(gameContainer, x, y) {
 	const enemyShip = document.createElement('img');
@@ -122,32 +141,14 @@ function createEnemyShipRGY(gameContainer, x, y) {
 	
 	gameContainer.appendChild(enemyShip);
 	
-	let enemy = { x, y, enemyShip };
+	let enemy = { x, y, cooldown: randomNumMinMax(.5,enemyRocketCoolDown), enemyShip };
 	gameDefaultState.enemies.push(enemy);
 	
 	setLocation(enemyShip, x, y);
-	
-	
-//	console.log(document.querySelectorAll('img.enemyShipRGY'));
-	
-	let arrayOfRGY = new Array(document.querySelectorAll('img.enemyShipRGY'));
-//	
-	let sum = arrayOfRGY[0][1];
-//	for(let i = 0; i < 3; i++) {
-//		let rgy = arrayOfRGY[0][i];
-//		if(rgy[0][i] === 0) {
-//			setInterval(() => {
-//				enemyShip.style.animation = "rotate 3s ease infinite";
-//			}, 1000);   
-//		} else if (rgy[i] === 1) {
-//			setInterval(() => {
-//				enemyShip.style.animation = "rotate 3s ease infinite";
-//			}, 2000) 
-//		}
-//		
-//	}
-	console.log(sum);
+
 }
+
+//Create createEnemyShipRB Function
 
 function createEnemyShipRB(gameContainer, x, y) {
 	const enemyShip = document.createElement('img');
@@ -156,11 +157,13 @@ function createEnemyShipRB(gameContainer, x, y) {
 	
 	gameContainer.appendChild(enemyShip);
 	
-	let enemy = { x, y, enemyShip };
+	let enemy = { x, y, cooldown: randomNumMinMax(.5,enemyRocketCoolDown), enemyShip };
 	gameDefaultState.enemies.push(enemy);
 	
 	setLocation(enemyShip, x, y);
 }
+
+//Create createEnemyShipRYB Function
 
 function createEnemyShipRYB(gameContainer, x, y) {
 	const enemyShip = document.createElement('img');
@@ -169,7 +172,7 @@ function createEnemyShipRYB(gameContainer, x, y) {
 	
 	gameContainer.appendChild(enemyShip);
 	
-	let enemy = { x, y, enemyShip };
+	let enemy = { x, y, cooldown: randomNumMinMax(.5,enemyRocketCoolDown), enemyShip};
 	gameDefaultState.enemies.push(enemy);
 	
 	setLocation(enemyShip, x, y);
@@ -188,6 +191,22 @@ function createRocket(gameContainer, x, y){
 	gameDefaultState.rockets.push(rocket)
 	
 	setLocation(rocketNode, x, y)
+}
+
+//Create Enemy Rocket Function
+
+function createEnemyRocket(gameContainer, x, y) {
+	let enemyRocket = document.createElement('img');
+	enemyRocket.src = "images/enemy/enemyRocket.png";
+	enemyRocket.setAttribute("class","rocket");
+	
+	gameContainer.append(enemyRocket);
+	
+	let eRocket = { x, y, enemyRocket};
+	gameDefaultState.eRockets.push(eRocket);
+	
+	setLocation(enemyRocket, x, y);
+	
 }
 
 //Set location of absolute element
@@ -236,7 +255,7 @@ function changePlayer(deltaTime, gameContainer) {
 	setLocation(playerShip, gameDefaultState.playerPositionX, gameDefaultState.playerPositionY)
 }
 
-//Change and update playerShip loaction
+//Change and update enemy loaction
 
 function changeEnemy(deltaTime, gameContainer) {
 	const deltaX = Math.sin(gameDefaultState.lastTimeRecorded / 500) * 20;
@@ -248,6 +267,11 @@ function changeEnemy(deltaTime, gameContainer) {
 		const x = enemy.x + deltaX - 20;
 		const y = enemy.y + deltaY;
 		setLocation(enemy.enemyShip, x, y);
+		enemy.cooldown -= deltaTime;
+		if(enemy.cooldown <= 0) {
+		   createEnemyRocket(gameContainer, x, y);
+		   enemy.cooldown = enemyRocketCoolDown;
+		}
 	}
 	
 	gameDefaultState.enemies = gameDefaultState.enemies.filter(e => !e.isRemoved);
@@ -276,12 +300,38 @@ function changeRocket(deltaTime, gameContainer) {
 			if(hitTest(obj1, obj2)) {
 			    removeEnemyShip(gameContainer, enemy);
 				removeRocket(gameContainer, rocket);
+				score += 1000;
+				scoreCounterNode.textContent = score;
 				break;
 			}
 		}
 	}
 	
 	gameDefaultState.rockets = gameDefaultState.rockets.filter(e => !e.isRemoved)
+}
+
+//Change and update enemy rocket loaction
+
+function changeEnemyRocket(deltaTime, gameContainer) {
+	let enemyRockets = gameDefaultState.eRockets;
+	for(let i = 0; i < enemyRockets.length; i++) {
+		let eRocket = enemyRockets[i];
+		eRocket.y += deltaTime * enemyRocketMaxSpeed;
+		if(eRocket.y > 800) {
+		   removeEnemyRocket(gameContainer, eRocket);
+		}
+		setLocation(eRocket.enemyRocket, eRocket.x, eRocket.y);
+		
+		const obj1 = eRocket.enemyRocket.getBoundingClientRect();
+//		const enemies = gameDefaultState.enemies;
+		const player = playerShip.getBoundingClientRect();
+			if(hitTest(obj1, player)) {
+			    removePlayerShip(gameContainer, player);
+				removeEnemyRocket(gameContainer, eRocket);
+				break;
+			}
+	}
+	gameDefaultState.eRockets = gameDefaultState.eRockets.filter(e => !e.isRemoved);
 }
 
 //Remove rocket from DOM
@@ -291,11 +341,82 @@ function removeRocket(gameContainer, rocket) {
 	rocket.isRemoved = true;
 }
 
+function removeEnemyRocket(gameContainer, eRocket) {
+	gameContainer.removeChild(eRocket.enemyRocket);
+	eRocket.isRemoved = true;
+}
+
 //Remove enemy from DOM
 
 function removeEnemyShip(gameContainer, enemy) {
-	gameContainer.removeChild(enemy.enemyShip);
+	
+	enemy.enemyShip.src = 'images/enemy/collision.gif';
+	
+	setTimeout(function(){
+		gameContainer.removeChild(enemy.enemyShip);
+	}, 500)
+	
 	enemy.isRemoved = true;
+	
+	if(score >= 39000) {
+		let winMessage = document.createElement('div');
+		document.querySelector('.modal').appendChild(winMessage);
+		
+		let countDown = 10;
+		
+		let timer = setInterval(function(){
+			if(countDown <= 0) {
+				clearInterval(timer);
+			}
+			countDown -= 1;
+			winMessage.innerHTML = `
+				<h1>You Won</h1>
+				<p>RESTARTING IN</p>
+				<p>${countDown}</p>
+			`;
+		}, 1000)
+		
+		fireworkEffect();
+		
+		setTimeout(function() {
+			location.reload();
+		},10000)
+   		
+	}
+}
+
+function removePlayerShip(gameContainer, player) {
+	
+	window.removeEventListener('keydown', keypressDown, false);
+	window.removeEventListener('keyup', keypressUp, false);
+	
+	playerShip.src = 'images/player/playerCollision.gif';
+	
+	let lostMessage = document.createElement('div');
+	document.querySelector('.modal').appendChild(lostMessage);
+		
+	let countDown = 10;
+		
+	let timer = setInterval(function(){
+		
+		if(countDown <= 0) {
+			clearInterval(timer);
+		}
+		
+		countDown -= 1;
+		
+		lostMessage.innerHTML = `
+			<h1>You Lost</h1>
+			<p>RESTARTING IN</p>
+			<p>${countDown}</p>
+		`;
+		
+	}, 1000)
+	
+	setTimeout(function(){
+		gameContainer.removeChild(playerShip);
+		location.reload();
+	}, 10000)
 }
 
 //Detect if keys are pressed
@@ -331,6 +452,7 @@ function update() {
 	changePlayer(deltaTime, gameContainer);
 	changeRocket(deltaTime, gameContainer);
 	changeEnemy(deltaTime, gameContainer);
+	changeEnemyRocket(deltaTime, gameContainer);
 	
 	gameDefaultState.lastTimeRecorded = currentTimeRecorded;
 	window.requestAnimationFrame(update);
@@ -348,34 +470,50 @@ function hitTest(obj1, obj2) {
 }
 
 //Start Game
+document.querySelector('.scoreCountContainer').style.visibility = 'hidden';
+start.addEventListener('click', e => {
+	e.target.style.display = 'none';
+	document.querySelector('.controls').style.display = 'none';
+	document.querySelector('.scoreCountContainer').style.visibility = 'visible';
+	init();
+	for(let i = 0; i < 6; i++) {
+	setInterval(function(deltaTime, gameContainer){
+		gameDefaultState.enemies[i].enemyShip.animate([
+		{ transform: `` },
+		{ transform: `translateX(${Math.floor(Math.random() * gameContainer_width)}px) translateY(${Math.floor(Math.random() * 900)}px) rotate(360deg)` }
+		], {
+		duration: 7000,
+		iterations: Infinity
+		});
+		},500)
+	}
 
-init();
+});
+
+
+
+function fireworkEffect() {
+	for(let i = 0; i <= 4; i++) {
+		let fireworkContainer = document.createElement('div');
+		fireworkContainer.setAttribute('class', `fireworkContainer${i}`)
+		document.body.append(fireworkContainer);
+
+		for(let i = 0; i < 12; i++) {
+			let fireworkExplosion = document.createElement('div');
+			fireworkExplosion.setAttribute('class', 'fireworkExplosion');
+			fireworkContainer.appendChild(fireworkExplosion);
+		}
+	}
+}
+
+
+
 window.addEventListener('keydown', keypressDown);
 window.addEventListener('keyup', keypressUp);
 window.requestAnimationFrame(update);
 
 
 
-
-console.log(gameDefaultState.playerPositionX)
-
-
-setInterval(function(){
-//	for(let i = 0; i < gameDefaultState.enemies.length; i++) {
-		gameDefaultState.enemies[0].enemyShip.animate([
-		{ transform: `translateY(${gameDefaultState.enemies[0].y}) rotate(0deg)` },
-		{ transform: `translateY(${gameDefaultState.playerPositionY * 2.16}px) rotate(360deg)` }
-		], {
-		duration: 6000,
-		iterations: Infinity
-		});
-	
-		
-		
-},500)
-
-
-setInterval(function(){removeEnemyShip(gameContainer, gameDefaultState.enemies[0])},2150)
 
 
 
