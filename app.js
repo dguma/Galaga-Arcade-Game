@@ -380,7 +380,7 @@ function removeEnemyShip(gameContainer, enemy) {
 	//Check if game is won
 	if(score >= 39000) {
 		let winMessage = document.createElement('div');
-		document.querySelector('.modal').appendChild(winMessage);
+		modal.appendChild(winMessage);
 		//count down and display message
 		let countDown = 10;
 		
@@ -419,7 +419,7 @@ function removePlayerShip(gameContainer) {
 	gameOver.play();
 	
 	let lostMessage = document.createElement('div');
-	document.querySelector('.modal').appendChild(lostMessage);
+	modal.appendChild(lostMessage);
 	//count down and display message	
 	let countDown = 5;
 		
