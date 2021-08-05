@@ -84,6 +84,7 @@ function init(){
 	
 	const spacingForEnemyRYB = (gameContainer_width - enemyRYBHorPadding * 2) / (numberOfEnemiesRYB_perRow - 1);
 	
+	//Disfine number for rows and spaceing from global variables
 	for(let a = 0; a < 1; a++) {
 		let y = enemyRGYVerPadding + a * enemyRGYVerSpacing;
 		for(let b = 0; b < numberOfEnemiesRGY_perRow; b++) {
@@ -125,6 +126,8 @@ function createPlayerShip(gameContainer){
 	
 }
 
+//Return a random number from min and max vaules 
+
 function randomNumMinMax(min, max) {
 	if(min === undefined) min = 0;
 	if(max === undefined) max = 1;
@@ -137,7 +140,6 @@ function createEnemyShipRGY(gameContainer, x, y) {
 	const enemyShip = document.createElement('img');
 	enemyShip.src = 'images/enemy/enemyBoss.gif';
 	enemyShip.setAttribute('class', 'enemyShipRGY');
-//	enemyShip.style.animation = "rotate 3s ease infinite";
 	
 	gameContainer.appendChild(enemyShip);
 	
@@ -291,15 +293,18 @@ function changeRocket(deltaTime, gameContainer) {
 		
 		setLocation(rocket.rocketNode, rocket.x, rocket.y);
 		
+		//Get objects perimeter 
 		const obj1 = rocket.rocketNode.getBoundingClientRect();
 		const enemies = gameDefaultState.enemies;
 		for(let i = 0; i < enemies.length; i++) {
 			const enemy = enemies[i];
 			if(enemy.isRemoved) continue;
 			const obj2 = enemy.enemyShip.getBoundingClientRect();
+			//Check to see if players rocket hits an enemy
 			if(hitTest(obj1, obj2)) {
 			    removeEnemyShip(gameContainer, enemy);
 				removeRocket(gameContainer, rocket);
+				//Add score
 				score += 1000;
 				scoreCounterNode.textContent = score;
 				break;
@@ -321,10 +326,13 @@ function changeEnemyRocket(deltaTime, gameContainer) {
 		   removeEnemyRocket(gameContainer, eRocket);
 		}
 		setLocation(eRocket.enemyRocket, eRocket.x, eRocket.y);
+	
+		//Get objects perimeter 
 		
 		const obj1 = eRocket.enemyRocket.getBoundingClientRect();
-//		const enemies = gameDefaultState.enemies;
 		const player = playerShip.getBoundingClientRect();
+		
+		//Check to see if an enemy rocket hits the player
 			if(hitTest(obj1, player)) {
 			    removePlayerShip(gameContainer, player);
 				removeEnemyRocket(gameContainer, eRocket);
@@ -349,19 +357,19 @@ function removeEnemyRocket(gameContainer, eRocket) {
 //Remove enemy from DOM
 
 function removeEnemyShip(gameContainer, enemy) {
-	
+	//add explosion gif
 	enemy.enemyShip.src = 'images/enemy/collision.gif';
-	
+	//Remove the enemy after .5 sec
 	setTimeout(function(){
 		gameContainer.removeChild(enemy.enemyShip);
 	}, 500)
 	
 	enemy.isRemoved = true;
-	
+	//Check if game is won
 	if(score >= 39000) {
 		let winMessage = document.createElement('div');
 		document.querySelector('.modal').appendChild(winMessage);
-		
+		//count down and display message
 		let countDown = 10;
 		
 		let timer = setInterval(function(){
@@ -377,7 +385,7 @@ function removeEnemyShip(gameContainer, enemy) {
 		}, 1000)
 		
 		fireworkEffect();
-		
+		//reload the page
 		setTimeout(function() {
 			location.reload();
 		},10000)
@@ -386,7 +394,7 @@ function removeEnemyShip(gameContainer, enemy) {
 }
 
 function removePlayerShip(gameContainer, player) {
-	
+	//disable event listeners
 	window.removeEventListener('keydown', keypressDown, false);
 	window.removeEventListener('keyup', keypressUp, false);
 	
@@ -394,7 +402,7 @@ function removePlayerShip(gameContainer, player) {
 	
 	let lostMessage = document.createElement('div');
 	document.querySelector('.modal').appendChild(lostMessage);
-		
+	//count down and display message	
 	let countDown = 10;
 		
 	let timer = setInterval(function(){
@@ -412,7 +420,7 @@ function removePlayerShip(gameContainer, player) {
 		`;
 		
 	}, 1000)
-	
+	//reload the page
 	setTimeout(function(){
 		gameContainer.removeChild(playerShip);
 		location.reload();
@@ -491,6 +499,7 @@ start.addEventListener('click', e => {
 });
 
 
+//Create explosion effect
 
 function fireworkEffect() {
 	for(let i = 0; i <= 4; i++) {
@@ -506,7 +515,7 @@ function fireworkEffect() {
 	}
 }
 
-
+//Keypress event and game frame request
 
 window.addEventListener('keydown', keypressDown);
 window.addEventListener('keyup', keypressUp);
