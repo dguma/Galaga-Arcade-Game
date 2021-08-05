@@ -1,5 +1,9 @@
 // JavaScript Document
 
+let gameMusic = new Audio('sounds/gameMusic.wav');
+gameMusic.volume = .125;
+gameMusic.loop = true;
+gameMusic.play();
 //Key Codes for Keyboard Controls
 
 const leftArrowKeycode = 37;
@@ -52,7 +56,7 @@ const enemyRYBVerPadding = 240;
 const enemyRYBVerSpacing = 50;
 
 const enemyRocketMaxSpeed = 200;
-const enemyRocketCoolDown = 30;
+const enemyRocketCoolDown = 15;
 
 const scoreCounterNode = document.querySelector('.scoreCount');
 let score = 0;
@@ -76,6 +80,7 @@ const gameDefaultState = {
 //Initialize Game Function
 
 function init(){
+	
 	createPlayerShip(gameContainer)
 	
 	const spacingForEnemyRGY = (gameContainer_width - enemyRGYHorPadding * 2) / (numberOfEnemiesRGY_perRow - 1);
@@ -188,6 +193,10 @@ function createRocket(gameContainer, x, y){
 	rocketNode.setAttribute("class","rocket");
 	
 	gameContainer.appendChild(rocketNode)
+	
+	let playerRocketSound = new Audio('sounds/playerRocketSound.wav');
+	playerRocketSound.volume = .125;
+	playerRocketSound.play();
 	
 	let rocket = { x, y, rocketNode }
 	gameDefaultState.rockets.push(rocket)
@@ -359,6 +368,9 @@ function removeEnemyRocket(gameContainer, eRocket) {
 function removeEnemyShip(gameContainer, enemy) {
 	//add explosion gif
 	enemy.enemyShip.src = 'images/enemy/collision.gif';
+	let enemyShot = new Audio('sounds/enemyShot.wav');
+	enemyShot.volume = .125;
+	enemyShot.play();
 	//Remove the enemy after .5 sec
 	setTimeout(function(){
 		gameContainer.removeChild(enemy.enemyShip);
@@ -393,17 +405,23 @@ function removeEnemyShip(gameContainer, enemy) {
 	}
 }
 
-function removePlayerShip(gameContainer, player) {
+function removePlayerShip(gameContainer) {
 	//disable event listeners
 	window.removeEventListener('keydown', keypressDown, false);
 	window.removeEventListener('keyup', keypressUp, false);
 	
 	playerShip.src = 'images/player/playerCollision.gif';
+	let playerDied = new Audio('sounds/playerDied.wav');
+	playerDied.volume = .125;
+	playerDied.play();
+	
+	let gameOver = new Audio('sounds/gameOver.wav');
+	gameOver.play();
 	
 	let lostMessage = document.createElement('div');
 	document.querySelector('.modal').appendChild(lostMessage);
 	//count down and display message	
-	let countDown = 10;
+	let countDown = 5;
 		
 	let timer = setInterval(function(){
 		
@@ -424,7 +442,7 @@ function removePlayerShip(gameContainer, player) {
 	setTimeout(function(){
 		gameContainer.removeChild(playerShip);
 		location.reload();
-	}, 10000)
+	}, 5000)
 }
 
 //Detect if keys are pressed
@@ -480,12 +498,20 @@ function hitTest(obj1, obj2) {
 //Start Game
 document.querySelector('.scoreCountContainer').style.visibility = 'hidden';
 start.addEventListener('click', e => {
+	let startGame = new Audio('sounds/startGame.wav');
+	startGame.volume = .125;
+	startGame.play();
+	gameMusic.pause();
 	e.target.style.display = 'none';
 	document.querySelector('.controls').style.display = 'none';
 	document.querySelector('.scoreCountContainer').style.visibility = 'visible';
-	init();
+	
+	setTimeout(function(){
+		init();
+	}, 6500);
+	
 	for(let i = 0; i < 6; i++) {
-	setInterval(function(deltaTime, gameContainer){
+	setInterval(function(){
 		gameDefaultState.enemies[i].enemyShip.animate([
 		{ transform: `` },
 		{ transform: `translateX(${Math.floor(Math.random() * gameContainer_width)}px) translateY(${Math.floor(Math.random() * 900)}px) rotate(360deg)` }
@@ -502,12 +528,18 @@ start.addEventListener('click', e => {
 //Create explosion effect
 
 function fireworkEffect() {
+	
+	let fireworkSound = new Audio('sounds/fireworkExplosion.wav');
+	fireworkSound.volume = .125;
+	fireworkSound.loop = true;
+	fireworkSound.play();
+	
 	for(let i = 0; i <= 4; i++) {
 		let fireworkContainer = document.createElement('div');
 		fireworkContainer.setAttribute('class', `fireworkContainer${i}`)
 		document.body.append(fireworkContainer);
 
-		for(let i = 0; i < 12; i++) {
+		for(let i = 0; i < 12; i++) {			
 			let fireworkExplosion = document.createElement('div');
 			fireworkExplosion.setAttribute('class', 'fireworkExplosion');
 			fireworkContainer.appendChild(fireworkExplosion);
